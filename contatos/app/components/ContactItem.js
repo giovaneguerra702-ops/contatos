@@ -1,14 +1,24 @@
 // app/components/ContactItem.jsx
 "use client";
+import Link from 'next/link';
 
 const ContactItem = ({ contact, onRemove }) => {
-    const handleRemove = (id) => {
-        setContacts((prev) => prev.filter((c) => c.id !== id));
-    };
+    // Monta a URL com os dados do contato como query parameters
+    const detailUrl =
+        `/contact/${contact.id}` +
+        `?nome=${encodeURIComponent(contact.nome)}` +
+        `&email=${encodeURIComponent(contact.email)}` +
+        `&telefone=${encodeURIComponent(contact.telefone)}`;
+
     return (
         <li className="p-4 flex items-center justify-between">
             <div>
-                <p className="font-medium text-gray-900">{contact.nome}</p>
+                <Link
+                    href={detailUrl}
+                    className="font-medium text-gray-900 hover:text-blue-600 transition-colors"
+                >
+                    {contact.nome}
+                </Link>
                 <p className="text-sm text-gray-600">
                     {contact.email} • {contact.telefone}
                 </p>
