@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 
-const ContactItem = ({ contact, onRemove }) => {
+const ContactItem = memo(({ contact, onRemove }) => {
     return (
         <li className="p-4 border border-gray-200 rounded-lg flex items-center justify-between hover:bg-gray-50">
             <div className="flex-1">
@@ -23,6 +23,6 @@ const ContactItem = ({ contact, onRemove }) => {
             </button>
         </li>
     );
-};
+});
 
 export default ContactItem;

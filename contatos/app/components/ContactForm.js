@@ -1,17 +1,22 @@
 // app/components/ContactForm.jsx
 "use client";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const ContactForm = ({ onAdd }) => {
     const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
     const [errors, setErrors] = useState({});
+    const nomeInputRef = useRef(null)
 
-    const handleChange = (e) => {
+    useEffect(()=>{
+        nomeInputRef.current.focus()
+    },[])
+
+    const handleChange = useCallback((e) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
         // Limpa o erro do campo ao começar a digitar
         if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
-    };
+    });
 
     const validate = () => {
         const newErrors = {};
@@ -22,7 +27,7 @@ const ContactForm = ({ onAdd }) => {
         return newErrors;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = useCallback((e) => {
         e.preventDefault();
         const newErrors = validate();
         if (Object.keys(newErrors).length > 0) {
@@ -31,8 +36,8 @@ const ContactForm = ({ onAdd }) => {
         }
         onAdd({ ...form, id: Date.now() });
         setForm({ nome: "", email: "", telefone: "" });
-        setErrors({});
-    };
+        nomeInputRef.current.focus()
+    });
 
     return (
         <form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 space-y-4">
@@ -41,6 +46,7 @@ const ContactForm = ({ onAdd }) => {
                     Nome: <span className="text-red-500">*</span>
                 </label>
                 <input
+                    ref= {nomeInputRef}
                     name="nome"
                     className={`w-full border rounded px-3 py-2 text-gray-900 ${errors.nome ? "border-red-500" : "border-gray-300"
                         }`}
